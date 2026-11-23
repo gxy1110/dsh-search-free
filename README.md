@@ -1,5 +1,7 @@
 # dsh-search-free
 
+> 仓库：<https://github.com/gxy1110/dsh-search-free>
+
 给 DeepSeek Harness（dsh）用的**免 key 多引擎搜索 provider**，挂在官方 web 能力接缝
 （`ctx.web`）上。装上之后，模型看到的还是那个 `web_search` 工具，换掉的只是背后的检索通道。
 
@@ -35,7 +37,7 @@ interface WebSearchProvider {
 
 ```sh
 # Git 仓库（推荐，跨设备一条命令）
-dsh plugin add git+https://<你的仓库地址>/dsh-search-free.git
+dsh plugin add git+https://github.com/gxy1110/dsh-search-free.git
 
 # 或本地目录
 dsh plugin add /path/to/dsh-search-free
@@ -43,6 +45,32 @@ dsh plugin add /path/to/dsh-search-free
 # 或 tarball
 dsh plugin add ./dsh-search-free-0.1.0.tgz
 ```
+
+桌面客户端（独立 profile，不能用 `dsh` 命令）走自带 CLI：
+
+```powershell
+$env:ELECTRON_RUN_AS_NODE = "1"
+& "C:\Users\<你>\AppData\Local\Programs\DeepSeek Harness\DeepSeek Harness.exe" --expose-internals `
+  "C:\Users\<你>\AppData\Local\Programs\DeepSeek Harness\resources\app.asar\dsh\node_modules\@deepseek-ai\dsh-desktop-host\lib\cli.js" `
+  plugin --profile desktop add "git+https://github.com/gxy1110/dsh-search-free.git"
+```
+
+## 更新
+
+`git+` 依赖锁在安装时的提交上，更新要重新 add 一次（幂等，会拉到最新 main）：
+
+```sh
+dsh plugin add git+https://github.com/gxy1110/dsh-search-free.git
+```
+
+或者进 profile 目录直接让 pnpm 重解析：
+
+```sh
+cd ~/.dsh/profiles/<profile> && pnpm update dsh-search-free
+```
+
+更新后重启 dsh（bundle 列表在启动时读取）。只想换配置（`searxng` / `engines` 等）不需要重装，
+改 `cordis.patch.yml` 热生效。
 
 装完检查 `cordis.patch.yml` 里是否多了这两段（`dsh plugin add` 会把 bundle patch 追加进 profile）：
 

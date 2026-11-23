@@ -28,6 +28,14 @@
     "tavily"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gxy1110/dsh-search-free.git"
+  },
+  "homepage": "https://github.com/gxy1110/dsh-search-free#readme",
+  "bugs": {
+    "url": "https://github.com/gxy1110/dsh-search-free/issues"
+  },
   "engines": {
     "node": ">=20.0.0",
     "dsh": ">=0.1.2-rc.1 <0.4.0-0"
