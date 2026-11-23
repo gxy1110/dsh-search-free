@@ -15,7 +15,6 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 
 const DEFAULTS = {
   budgetMs: 5200,
-  extraBudgetMs: 2500,
   priorityWaitMs: 2400,
   minResults: 3,
   perEngineCap: 5,
@@ -347,26 +346,7 @@ export async function searchWeb(query, options) {
     served = raced.served;
     failures.push(...raced.failures);
 
-    if (merged.length < config.minResults && engines.length > 0) {
-      const rest = engines.filter((engine) => !engine.priority);
-      if (rest.length > 0) {
-        // 主层不够时，把没被选中的引擎（例如按语言池错开的）再补一轮
-        const extra = await raceWithPriority(rest.slice(1), query, {
-          limit,
-          budgetMs: Math.min(config.extraBudgetMs, config.fetchTimeoutMs),
-          signal: controller.signal,
-          state,
-          perEngineCap: config.perEngineCap,
-          priorityWaitMs: 0,
-          priorityTake: 0,
-        });
-        const seen = new Set(merged.map((item) => normalizeUrlLite(item.url)));
-        mergeInto(merged, seen, extra.merged, limit, limit);
-        served.push(...extra.served.filter((label) => !served.includes(label)));
-        failures.push(...extra.failures);
-      }
-    }
-
+    // 所有引擎都已在同一轮竞速里跑过，凑不够就直接走 HTML 兜底，不重复请求
     state.settled = true;
     controller.abort();
   } catch (error) {

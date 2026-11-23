@@ -11,6 +11,7 @@
   },
   "files": [
     "src",
+    "scripts",
     "cordis.patch.yml",
     "README.md",
     "LICENSE"

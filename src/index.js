@@ -36,7 +36,7 @@ export const name = 'web-search-free';
 /** 注册进 web 能力接缝。 */
 export const inject = ['web'];
 
-const NUMERIC_KEYS = ['budgetMs', 'extraBudgetMs', 'priorityWaitMs', 'minResults', 'perEngineCap', 'priorityTake', 'fetchTimeoutMs'];
+const NUMERIC_KEYS = ['budgetMs', 'priorityWaitMs', 'minResults', 'perEngineCap', 'priorityTake', 'fetchTimeoutMs'];
 
 function normalizeConfig(raw) {
   const config = raw !== null && typeof raw === 'object' ? raw : {};
