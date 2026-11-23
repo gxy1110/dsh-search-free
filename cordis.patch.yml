@@ -1,0 +1,33 @@
+# dsh-search-free —— profile 侧的 bundle 补丁层
+#
+# 只做两件事：
+#   1) 插入本插件的 plugins 行（loader 会从 profile 的 node_modules 里按 name 解析）
+#   2) 把 web 服务的选择显式指到本插件注册的 provider id
+#
+# 注意：这一行是「整块替换 config」语义（见 dsh-base 补丁头注释），所以 web 的
+# fetchProvider 必须一起写出来，否则会被冲成未设置。这里的 http 指的是
+# dsh-web-fetch-fakeip 注册的抓取 provider（它沿用原生 id `http`）。如果你没装
+# 那个插件、而是用原生 http 抓取，这行同样成立。
+#
+# 卸载前请先删掉下面这段，否则 searchProvider 会指向一个没人注册的 id，每次
+# 搜索都会报 `configured web provider "dsh-search-free" is not registered`。
+
+- insert:
+    - id: web-search-free
+      name: 'dsh-search-free'
+      config:
+        # 自建 SearXNG 实例（可选，留空则不注册该引擎）。可写多个，按顺序回退。
+        searxng: []
+        # 参与并发的免 key 公共引擎；留空等于全部启用。
+        engines:
+          - exa
+          - keenable
+          - parallel
+          - anysearch
+          - tavily
+          - you
+
+- id: web
+  config:
+    searchProvider: dsh-search-free
+    fetchProvider: http

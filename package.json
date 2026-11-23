@@ -1,0 +1,44 @@
+{
+  "name": "dsh-search-free",
+  "version": "0.1.0",
+  "description": "Free multi-engine WebSearchProvider for the DeepSeek Harness web seam — keyless public search APIs plus optional self-hosted SearXNG, with no local proxy and no build step.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "web-search",
+    "searxng",
+    "exa",
+    "tavily"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "dsh": ">=0.1.2-rc.1 <0.4.0-0"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "check": "node --check src/index.js && node --check src/engines.js && node --check src/orchestrator.js && node --test \"test/*.test.js\"",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
